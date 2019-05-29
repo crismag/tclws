@@ -156,7 +156,8 @@ namespace eval ::WS::Server {
 # Version     Date     Programmer   Comments / Changes / Reasons
 # -------  ----------  ----------   -------------------------------------------
 #       1  07/06/2006  G.Lester     Initial version
-#
+#   2.6.2  05/29/2019  C.Magalang   Added Rivet > v3.0.1++ compatibility
+#                                   aliased rivet namespaced procs
 #
 ###########################################################################
 proc ::WS::Server::Service {args} {
@@ -258,6 +259,10 @@ proc ::WS::Server::Service {args} {
         }
         rivet {
             package require Rivet
+            if {[package vcompare [package versions Rivet] 3.0.1 ] >= 0} {
+                interp alias {} headers {} ::rivet::headers
+                interp alias {} abort_page {} ::rivet::abort_page
+            }
         }
         wibble {
             ##
